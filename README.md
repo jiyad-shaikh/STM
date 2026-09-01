@@ -24,17 +24,17 @@ The dashboard automatically calculates the current balance based on the income a
 
 ### Dashboard
 
-![Dashboard Screenshot](image.png)
+![Dashboard Screenshot](./Screenshots/Dashboard.png)
 
 ### Expenses
 
-![Expense Page Screenshot](image-1.png)
-![Expense Form Screenshot](image-2.png)
+![Expense Page Screenshot](./Screenshots/ExpensePage.png)
+![Expense Form Screenshot](./Screenshots/ExpenseForm.png)
 
 ### Income
 
-![Income Page Screenshot](image-3.png)
-![Income Form Screenshot](image-4.png)
+![Income Page Screenshot](./Screenshots/IncomePage.png)
+![Income Form Screenshot](./Screenshots/IncomeForm.png)
 ## 🛠️ Technologies Used
 
 ### Frontend
