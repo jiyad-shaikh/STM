@@ -1,26 +1,47 @@
-function SummaryCards({ totalIncome, totalExpenses }) {
-    const balance = totalIncome - totalExpenses;
+function SummaryCards({
+    totalBalance,
+    totalIncome,
+    totalExpenses
+}) {
 
     return (
-        <section className="summary-cards">
+        <div className="summary-cards">
 
             <div className="summary-card">
+
                 <span>Total Balance</span>
-                <h2>₹{balance}</h2>
+
+                <h2>
+                    ₹{totalBalance}
+                </h2>
+
             </div>
 
+
             <div className="summary-card">
+
                 <span>Total Income</span>
-                <h2>₹{totalIncome}</h2>
+
+                <h2>
+                    ₹{totalIncome}
+                </h2>
+
             </div>
+
 
             <div className="summary-card">
+
                 <span>Total Expenses</span>
-                <h2>₹{totalExpenses}</h2>
+
+                <h2>
+                    ₹{totalExpenses}
+                </h2>
+
             </div>
 
-        </section>
+        </div>
     );
 }
 
 export default SummaryCards;
+

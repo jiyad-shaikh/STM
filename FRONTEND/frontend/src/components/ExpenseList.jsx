@@ -1,4 +1,5 @@
 import ExpenseItem from "./ExpenseItem";
+import '../styles/expenseList.css';
 
 function ExpenseList({
     expenses,

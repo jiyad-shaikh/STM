@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const expenseRoute = require("./routes/expense.route");
+const incomeRoute = require("./routes/income.route");
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/expenses", expenseRoute);
+app.use("/api/incomes", incomeRoute);
 
 module.exports = app;

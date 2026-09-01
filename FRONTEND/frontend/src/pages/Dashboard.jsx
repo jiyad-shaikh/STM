@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -10,19 +9,99 @@ import ExpenseList from "../components/ExpenseList";
 import "../styles/Dashboard.css";
 
 function Dashboard({
-    expenses,
+    expenses = [],
+    incomes = [],
     onAddExpense,
     onUpdateExpense,
     onDeleteExpense
 }) {
+
     const [showForm, setShowForm] = useState(false);
 
-    const totalExpenses = expenses.reduce(
-        (total, expense) => total + Number(expense.amount),
+    const [editingExpense, setEditingExpense] =
+        useState(null);
+
+
+    // =========================
+    // CALCULATIONS
+    // =========================
+
+    const totalIncome = incomes.reduce(
+        (total, income) =>
+            total + Number(income.amount),
         0
     );
 
-    const totalIncome = 0;
+    const totalExpenses = expenses.reduce(
+        (total, expense) =>
+            total + Number(expense.amount),
+        0
+    );
+
+    const totalBalance =
+        totalIncome - totalExpenses;
+
+
+    // =========================
+    // ADD EXPENSE
+    // =========================
+
+    const handleAddExpense = async (expense) => {
+
+        await onAddExpense(expense);
+
+        setShowForm(false);
+    };
+
+
+    // =========================
+    // EDIT EXPENSE
+    // =========================
+
+    const handleEditExpense = (expense) => {
+
+        setEditingExpense(expense);
+
+        setShowForm(true);
+    };
+
+
+    // =========================
+    // CLOSE FORM
+    // =========================
+
+    const handleCloseForm = () => {
+
+        setShowForm(false);
+
+        setEditingExpense(null);
+    };
+
+
+    // =========================
+    // SUBMIT FORM
+    // =========================
+
+    const handleSubmitExpense = async (expense) => {
+
+        if (editingExpense) {
+
+            await onUpdateExpense(
+                editingExpense.id,
+                expense
+            );
+
+        } else {
+
+            await onAddExpense(expense);
+
+        }
+
+        setShowForm(false);
+
+        setEditingExpense(null);
+    };
+
 
     return (
         <div className="dashboard">
@@ -34,32 +113,50 @@ function Dashboard({
                 <header className="dashboard-header">
 
                     <div>
+
                         <h1>Dashboard</h1>
 
                         <p>
-                            Track and manage your expenses.
+                            Track and manage your finances.
                         </p>
+
                     </div>
+
 
                     <button
                         className="add-expense-btn"
-                        onClick={() => setShowForm(true)}
+                        onClick={() => {
+
+                            setEditingExpense(null);
+
+                            setShowForm(true);
+
+                        }}
                     >
                         + Add Expense
                     </button>
 
                 </header>
 
+
+                {/* SUMMARY */}
+
                 <SummaryCards
+                    totalBalance={totalBalance}
                     totalIncome={totalIncome}
                     totalExpenses={totalExpenses}
                 />
+
+
+                {/* RECENT EXPENSES */}
 
                 <section className="content-section">
 
                     <div className="section-header">
 
-                        <h2>Recent Expenses</h2>
+                        <h2>
+                            Recent Expenses
+                        </h2>
 
                         <Link to="/expenses">
                             View All
@@ -67,31 +164,48 @@ function Dashboard({
 
                     </div>
 
+
                     <ExpenseList
-                        expenses={expenses.slice(-5).reverse()}
+
+                        expenses={
+                            expenses
+                                .slice(-5)
+                                .reverse()
+                        }
+
                         category="All Categories"
+
                         onDelete={onDeleteExpense}
-                        onEdit={(expense) => {
-                            console.log(
-                                "Edit from dashboard:",
-                                expense
-                            );
-                        }}
+
+                        onEdit={handleEditExpense}
+
                     />
 
                 </section>
 
             </main>
 
+
+            {/* EXPENSE FORM */}
+
             {showForm && (
+
                 <ExpenseForm
-                    onAddExpense={async (expense) => {
-                        await onAddExpense(expense);
-                        setShowForm(false);
-                    }}
-                    onClose={() => setShowForm(false)}
-                    editingExpense={null}
+
+                    onAddExpense={
+                        handleSubmitExpense
+                    }
+
+                    onClose={
+                        handleCloseForm
+                    }
+
+                    editingExpense={
+                        editingExpense
+                    }
+
                 />
+
             )}
 
         </div>

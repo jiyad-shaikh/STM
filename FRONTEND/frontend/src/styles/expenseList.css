@@ -1,0 +1,44 @@
+.expense-list {
+    width: 100%;
+}
+
+.expense-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.expense-list-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.expense-list-count {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.empty-expenses {
+    text-align: center;
+
+    padding: 55px 20px;
+
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.empty-expenses h2 {
+    margin-bottom: 8px;
+
+    font-size: 18px;
+}
+
+.empty-expenses p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+

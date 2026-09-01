@@ -6,8 +6,13 @@ import Navbar from "../components/Navbar";
 
 import "../styles/Income.css";
 
-function Income() {
-    const [incomes, setIncomes] = useState([]);
+function Income({
+    incomes,
+    onAddIncome,
+    onUpdateIncome,
+    onDeleteIncome
+}) {
+    
 
     const [showForm, setShowForm] = useState(false);
 
@@ -15,21 +20,6 @@ function Income() {
         (total, income) => total + income.amount,
         0
     );
-
-    const handleAddIncome = (income) => {
-        setIncomes((previousIncomes) => [
-            ...previousIncomes,
-            income
-        ]);
-    };
-
-    const handleDeleteIncome = (id) => {
-        setIncomes((previousIncomes) =>
-            previousIncomes.filter(
-                (income) => income.id !== id
-            )
-        );
-    };
 
     return (
         <div className="income-page">
@@ -69,14 +59,14 @@ function Income() {
 
                 <IncomeList
                     incomes={incomes}
-                    onDelete={handleDeleteIncome}
+                    onDelete={onDeleteIncome}
                 />
 
             </div>
 
             {showForm && (
                 <IncomeForm
-                    onAddIncome={handleAddIncome}
+                    onAddIncome={onAddIncome}
                     onClose={() => setShowForm(false)}
                 />
             )}

@@ -17,34 +17,53 @@ import {
     deleteExpense
 } from "./api/expense.api";
 
+import {
+    getIncomes,
+    createIncome,
+    updateIncome,
+    deleteIncome
+} from "./api/income.api";
+
 function App() {
 
     const [expenses, setExpenses] = useState([]);
+
+    const [incomes, setIncomes] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
-        const loadExpenses = async () => {
+    const loadData = async () => {
 
-            try {
-                const response = await getExpenses();
+        try {
 
-                setExpenses(response.data);
+            const [expenseResponse, incomeResponse] =
+                await Promise.all([
+                    getExpenses(),
+                    getIncomes()
+                ]);
 
-            } catch (error) {
-                console.error(
-                    "Failed to fetch expenses:",
-                    error
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
+            setExpenses(expenseResponse.data);
+            setIncomes(incomeResponse.data);
 
-        loadExpenses();
+        } catch (error) {
 
-    }, []);
+            console.error(
+                "Failed to fetch data:",
+                error
+            );
+
+        } finally {
+
+            setLoading(false);
+
+        }
+    };
+
+    loadData();
+
+}, []);
 
     const handleAddExpense = async (expense) => {
 
@@ -116,6 +135,76 @@ function App() {
         }
     };
 
+    const handleAddIncome = async (income) => {
+
+    try {
+
+        const response = await createIncome(income);
+
+        setIncomes((previousIncomes) => [
+            ...previousIncomes,
+            response.data.income
+        ]);
+
+    } catch (error) {
+
+        console.error(
+            "Failed to create income:",
+            error
+        );
+
+    }
+    };
+
+    const handleUpdateIncome = async (id, income) => {
+
+    try {
+
+        const response = await updateIncome(
+            id,
+            income
+        );
+
+        setIncomes((previousIncomes) =>
+            previousIncomes.map((item) =>
+                item.id === id
+                    ? response.data.income
+                    : item
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to update income:",
+            error
+        );
+
+    }
+    };
+
+    const handleDeleteIncome = async (id) => {
+
+    try {
+
+        await deleteIncome(id);
+
+        setIncomes((previousIncomes) =>
+            previousIncomes.filter(
+                (income) => income.id !== id
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Failed to delete income:",
+            error
+        );
+
+    }
+    };
+
     if (loading) {
         return <h2>Loading expenses...</h2>;
     }
@@ -130,6 +219,7 @@ function App() {
                     element={
                         <Dashboard
                             expenses={expenses}
+                            incomes={incomes}
                             onAddExpense={handleAddExpense}
                             onUpdateExpense={handleUpdateExpense}
                             onDeleteExpense={handleDeleteExpense}
@@ -151,7 +241,14 @@ function App() {
 
                 <Route
                     path="/income"
-                    element={<Income />}
+                    element={
+                        <Income
+                            incomes={incomes}
+                            onAddIncome={handleAddIncome}
+                            onUpdateIncome={handleUpdateIncome}
+                            onDeleteIncome={handleDeleteIncome}
+                        />
+                    }
                 />
 
             </Routes>

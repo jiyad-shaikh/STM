@@ -1,44 +1,66 @@
-function ExpenseItem({ expense, onDelete, onEdit }) {
+import '../styles/expenseItem.css';
+
+function ExpenseItem({
+    expense,
+    onDelete,
+    onEdit
+}) {
+
     return (
         <div className="expense-item">
 
             <div className="expense-info">
 
                 <div className="expense-icon">
-                    {expense.category.charAt(0)}
+                    ₹
                 </div>
 
-                <div>
-                    <h3>{expense.title}</h3>
+                <div className="expense-details">
+
+                    <h3>
+                        {expense.title}
+                    </h3>
 
                     <p>
-                        {expense.category} • {expense.date}
+                        {expense.date}
                     </p>
 
-                    {expense.description && (
-                        <small>{expense.description}</small>
-                    )}
+                    <span className="expense-category">
+                        {expense.category}
+                    </span>
+
                 </div>
 
             </div>
 
-            <div className="expense-actions">
+            <div className="expense-right">
 
-                <strong>
+                <span className="expense-amount">
                     - ₹{expense.amount}
-                </strong>
+                </span>
 
-                <button
-                    onClick={() => onEdit(expense)}
-                >
-                    Edit
-                </button>
+                <div className="expense-actions">
 
-                <button
-                    onClick={() => onDelete(expense.id)}
-                >
-                    Delete
-                </button>
+                    <button
+                        onClick={() =>
+                            onEdit(expense)
+                        }
+                        title="Edit"
+                    >
+                        ✏️
+                    </button>
+
+                    <button
+                        className="delete-btn"
+                        onClick={() =>
+                            onDelete(expense.id)
+                        }
+                        title="Delete"
+                    >
+                        🗑️
+                    </button>
+
+                </div>
 
             </div>
 
@@ -47,3 +69,4 @@ function ExpenseItem({ expense, onDelete, onEdit }) {
 }
 
 export default ExpenseItem;
+
